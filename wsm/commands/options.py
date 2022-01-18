@@ -20,6 +20,19 @@ class WSMParser:
         self.add_ban_subparser()
         self.add_whois_parser()
         self.add_search_parser()
+        self.add_status_parser()
+
+    def add_status_parser(self):
+        status = self.subparser.add_parser(
+            "status",
+            help="Display wsm status"
+        )
+
+        status.add_argument(
+            dest="status",
+            action="store_true",
+            help="Display wsm status"
+        )
     
     def add_search_parser(self):
         search = self.subparser.add_parser(
@@ -32,7 +45,6 @@ class WSMParser:
             nargs="*",
             help="Search a list of ips in failed and accepted dataframe"
         )
-
 
     def add_whois_parser(self):
         whois = self.subparser.add_parser(
@@ -55,7 +67,6 @@ class WSMParser:
             action="store_true"
         )
 
-       
     def add_ban_subparser(self):
         ban = self.subparser.add_parser(
             'ban',
@@ -89,7 +100,6 @@ class WSMParser:
             help='check failed ip to ban',
             action='store_true'
         )
-
 
     def add_config_subparser(self):
         config = self.subparser.add_parser(
@@ -179,8 +189,7 @@ class WSMParser:
         #     action="store_true",
         #     help='clear whois cache',
         # )
-    
-        
+     
     def add_check_subparser(self):
 
         check = self.subparser.add_parser(
