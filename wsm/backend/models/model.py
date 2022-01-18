@@ -1,0 +1,71 @@
+import sqlite3
+from typing import Any, Dict, Optional, Tuple, Union
+from backend.config import DB_PATH
+
+
+def WSM_CONN() -> sqlite3.Connection:
+    return sqlite3.connect(
+        DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+    )
+
+
+def query(
+    command: str,
+    params: Optional[Union[Tuple[Any], Dict[str, Any]]] = None,
+    mode: Optional[str] = None,
+) -> sqlite3.Cursor:
+    WSM = WSM_CONN()
+    with WSM:
+        if mode == "script":
+            return WSM.executescript(command).fetchall()
+        elif mode == "many":
+            if params is None:
+                raise TypeError("parames must be specified")
+            return WSM.executemany(command, params).fetchall()
+
+        if params is not None:
+            return WSM.execute(command, params).fetchall()
+
+        return WSM.execute(command).fetchall()
+
+
+def init_db() -> None:
+    if DB_PATH.is_file():
+        return
+        
+    table = """
+        BEGIN TRANSACTION;
+        CREATE TABLE whois_cache (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ip TEXT,
+            country TEXT
+        );
+
+        CREATE TABLE failed (
+            ip TEXT,
+            username TEXT,
+            time TIMESTAMP
+        );
+
+        CREATE TABLE success (
+            ip TEXT,
+            username TEXT,
+            time TIMESTAMP
+        );
+
+        CREATE TABLE banned (
+            ip TEXT,
+            expire TIMESTAMP
+        );
+
+        CREATE TABLE allow (
+            ip TEXT UNIQUE
+        );
+
+        CREATE TABLE deny (
+            ip TEXT UNIQUE
+        );
+
+        COMMIT;
+    """
+    query(table, mode="script")
