@@ -4,7 +4,7 @@ import toml
 
 pkg_path: Path = Path(__file__).resolve().parent.parent
 CONFIG_PATH: Path = pkg_path / ".config" / "config.toml"
-
+DB_PATH: Path = pkg_path / ".config" / "wsm.db"
 
 def check_config() -> None:
     if not CONFIG_PATH.parent.is_dir():
