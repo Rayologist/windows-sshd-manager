@@ -26,6 +26,9 @@ if parser.get("subcmd") == "check":
     print(f"check: {parser.get('check')}")
     print(conf)
 
+if parser.get("subcmd") == "status":
+    print('status')
+
 if parser.get("subcmd") == "search":
     print("search")
 
