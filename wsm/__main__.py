@@ -27,7 +27,7 @@ if parser.get("subcmd") == "check":
     print(conf)
 
 if parser.get("subcmd") == "status":
-    print('status')
+    print("status")
 
 if parser.get("subcmd") == "search":
     print("search")
@@ -66,10 +66,10 @@ if parser.get("subcmd") == "config":
         update_config(updates)
 
     if subcommand == "get":
-        if parser.get('all'):
+        if parser.get("all"):
             for item in conf:
-                 print(f"{item}={conf.get(item)}")
-        else:        
-            show = [ k for k, v in subparams.items() if v]
+                print(f"{item}={conf.get(item)}")
+        else:
+            show = [k for k, v in subparams.items() if v]
             for item in show:
                 print(f"{item}={conf.get(item)}")

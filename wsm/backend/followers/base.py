@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Dict
 import re
 
+
 class BaseStatus(ABC):
     __slots__ = ()
 
