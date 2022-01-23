@@ -1,5 +1,5 @@
 import sqlite3
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from backend.config import DB_PATH
 
 
@@ -13,7 +13,7 @@ def query(
     command: str,
     params: Optional[Union[Tuple[Any], Dict[str, Any]]] = None,
     mode: Optional[str] = None,
-) -> sqlite3.Cursor:
+) -> List:
     WSM = WSM_CONN()
     with WSM:
         if mode == "script":
