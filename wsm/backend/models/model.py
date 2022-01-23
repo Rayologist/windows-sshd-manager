@@ -1,6 +1,6 @@
 import sqlite3
 from typing import Any, Dict, List, Optional, Tuple, Union
-from backend.config import DB_PATH
+from ..config import DB_PATH
 
 
 def WSM_CONN() -> sqlite3.Connection:

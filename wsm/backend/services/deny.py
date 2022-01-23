@@ -1,5 +1,5 @@
-from backend import query
 from ._types import List
+from ..models.model import query
 
 
 def create_deny(ip: str) -> List:

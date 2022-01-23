@@ -1,5 +1,5 @@
-from backend import query
 from ._types import datetime, List
+from ..models.model import query
 
 
 def create_success(ip: str, username: str, time: datetime) -> List:
