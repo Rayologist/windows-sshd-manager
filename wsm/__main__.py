@@ -21,6 +21,8 @@ if parser.get("subcmd") != "config":
             f'Please use "wsm config --log-path your/path" to first configure path.'
         )
 
+if parser.get("subcmd") == "start":
+    start(conf['logpath'])
 
 if parser.get("subcmd") == "check":
     print(f"check: {parser.get('check')}")

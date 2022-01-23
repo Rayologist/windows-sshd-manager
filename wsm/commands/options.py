@@ -21,6 +21,19 @@ class WSMParser:
         self.add_whois_parser()
         self.add_search_parser()
         self.add_status_parser()
+        self.add_start_parser()
+
+    def add_start_parser(self):
+        start = self.subparser.add_parser(
+            "start",
+            help="Start wsm service"
+        )
+
+        start.add_argument(
+            dest="start",
+            action="store_true",
+            help="Start wsm service"
+        )
 
     def add_status_parser(self):
         status = self.subparser.add_parser(
