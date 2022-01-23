@@ -35,9 +35,8 @@ def init_db() -> None:
 
     table = """
         BEGIN TRANSACTION;
-        CREATE TABLE whois_cache (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            ip TEXT,
+        CREATE TABLE country (
+            ip TEXT UNIQUE,
             country TEXT
         );
 
