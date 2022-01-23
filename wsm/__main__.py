@@ -1,7 +1,6 @@
 import sys
 import pandas as pd
 from pathlib import Path
-import toml
 
 path = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(path))
@@ -12,7 +11,7 @@ wsm_parser = WSMParser()
 
 parser = vars(wsm_parser.parse_args())
 
-conf = toml.load(CONFIG_PATH)["SSHD"]
+conf = get_config()["SSHD"]
 
 
 if parser.get("subcmd") != "config":
