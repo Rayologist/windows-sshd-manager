@@ -13,8 +13,14 @@ def query(
     command: str,
     params: Optional[Union[Tuple[Any], Dict[str, Any]]] = None,
     mode: Optional[str] = None,
+    row_factory=None,
 ) -> List:
+
     WSM = WSM_CONN()
+
+    if row_factory is not None:
+        WSM.row_factory = row_factory
+
     with WSM:
         if mode == "script":
             return WSM.executescript(command).fetchall()

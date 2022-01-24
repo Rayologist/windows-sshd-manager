@@ -23,7 +23,8 @@ def get_to_ban(start_time: datetime, end_time: datetime, max_retry: int) -> List
     ) 
     WHERE count > :max_retry
     """
-    result: List = query(
-        to_ban, {"start_time": start_time, "end_time": end_time, "max_retry": max_retry}
+    return query(
+        to_ban,
+        {"start_time": start_time, "end_time": end_time, "max_retry": max_retry},
+        row_factory=lambda cursor, row: row[0],
     )
-    return list(map(lambda x: x[0], result))
