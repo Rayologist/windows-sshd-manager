@@ -1,4 +1,5 @@
 from datetime import datetime, timezone, timedelta
+from ipaddress import IPv4Address
 
 
 def parse_datetime(date: str, time: str) -> datetime:
@@ -13,3 +14,10 @@ def parse_datetime(date: str, time: str) -> datetime:
 def generate_expire(seconds: int) -> datetime:
     expire = datetime.now() + timedelta(seconds=seconds)
     return expire.astimezone(timezone.utc)
+
+
+def is_ipv4_address(ip):
+    try:
+        return IPv4Address(ip)
+    except ValueError:
+        return False
