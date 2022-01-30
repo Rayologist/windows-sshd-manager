@@ -35,15 +35,26 @@ def query(
         return WSM.execute(command).fetchall()
 
 
+async def async_query(
+    command: str,
+    params: Optional[Union[Tuple[Any], Dict[str, Any]]] = None,
+    mode: Optional[str] = None,
+    row_factory=None,
+) -> List:
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(None, query, command, params, mode, row_factory)
+
+
 def init_db() -> None:
     if DB_PATH.is_file():
         return
 
     table = """
         BEGIN TRANSACTION;
-        CREATE TABLE country (
+        CREATE TABLE whois (
             ip TEXT UNIQUE,
-            country TEXT
+            country TEXT,
+            whois TEXT
         );
 
         CREATE TABLE failed (
