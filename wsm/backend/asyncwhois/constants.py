@@ -1,0 +1,7 @@
+CREATE_WHOIS = "create_whois"
+GET_WHOIS = "get_whois"
+GET_WHOIS_BY_IP = "get_whois_by_ip"
+GET_IP_WITHOUT_WHOIS = "get_ip_without_whois"
+GET_IP_WITH_WHOIS = "get_ip_with_whois"
+UPDATE_WHOIS_BY_IP = "update_whois_by_ip"
+GET_CACHE_BY_IP = "get_cache_by_ip"
