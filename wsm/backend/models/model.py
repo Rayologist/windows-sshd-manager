@@ -55,7 +55,7 @@ def init_db() -> None:
         CREATE TABLE whois (
             ip TEXT UNIQUE,
             country TEXT,
-            whois TEXT
+            cache TEXT
         );
 
         CREATE TABLE failed (
