@@ -1,4 +1,5 @@
 import sys
+import asyncio
 import pandas as pd
 from pathlib import Path
 
@@ -21,7 +22,18 @@ if parser.get("subcmd") != "config":
         )
 
 if parser.get("subcmd") == "start":
-    start(conf['logpath'])
+    
+    async def main():
+        task = asyncio.create_task(
+            ban(
+                find_time=conf.get("findtime"),
+                ban_time=conf.get("bantime"),
+                max_retry=conf.get("maxretry"),
+            )
+        )
+        await asyncio.gather(start(conf["logpath"]), task, whois())
+
+    asyncio.run(main())
 
 if parser.get("subcmd") == "check":
     print(f"check: {parser.get('check')}")
