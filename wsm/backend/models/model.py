@@ -71,7 +71,7 @@ def init_db() -> None:
         );
 
         CREATE TABLE banned (
-            ip TEXT UNIQUE,
+            ip TEXT,
             expire TIMESTAMP
         );
 
