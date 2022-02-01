@@ -2,10 +2,9 @@ import asyncio
 import aiohttp
 from ipwhois import IPWhois as _IPWhois
 from typing import List, Iterable
-from .base import BaseAsyncWhois, Action
+from .base import BaseAsyncWhois, Action, Kind
 from .cache import IPWhoisCacheHandler
 from .extractor import IPWhoisExtractor
-from .constants import UPDATE_WHOIS_BY_IP, GET_CACHE_BY_IP
 from ipaddress import IPv4Address
 import time
 
@@ -33,7 +32,7 @@ class IPWhois(BaseAsyncWhois):
             extracted = self.extractor.extract(response)
             await self.cache.update(
                 Action(
-                    UPDATE_WHOIS_BY_IP,
+                    Kind.UPDATE_WHOIS_BY_IP,
                     {
                         "ip": ip,
                         "country": extracted["country"],
@@ -54,7 +53,7 @@ class IPWhois(BaseAsyncWhois):
             time.sleep(sleep_time)
 
     async def _cached_async_whois(self, ip: IPv4Address):
-        response = await self.cache.read(Action(GET_CACHE_BY_IP, {"ip": ip}))
+        response = await self.cache.read(Action(Kind.GET_CACHE_BY_IP, {"ip": ip}))
 
         if response == []:
             return await self._async_whois(ip)

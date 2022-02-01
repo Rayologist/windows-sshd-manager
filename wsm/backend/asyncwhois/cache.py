@@ -1,11 +1,4 @@
-from .base import BaseCacheHandler, Action
-from .constants import (
-    CREATE_WHOIS,
-    GET_WHOIS_BY_IP,
-    GET_WHOIS,
-    UPDATE_WHOIS_BY_IP,
-    GET_CACHE_BY_IP,
-)
+from .base import BaseCacheHandler, Action, Kind
 import json
 from ..services import (
     get_whois,
@@ -18,19 +11,19 @@ from ..services import (
 
 class IPWhoisCacheHandler(BaseCacheHandler):
     async def create(self, action: Action):
-        if action.kind == CREATE_WHOIS:
+        if action.kind == Kind.CREATE_WHOIS:
             return await create_whois(action.payload.ip)
 
     async def read(self, action: Action):
-        if action.kind == GET_WHOIS_BY_IP:
+        if action.kind == Kind.GET_WHOIS_BY_IP:
             return await get_whois_by_ip(action.payload.ip)
-        elif action.kind == GET_WHOIS:
+        elif action.kind == Kind.GET_WHOIS:
             return await get_whois()
-        elif action.kind == GET_CACHE_BY_IP:
+        elif action.kind == Kind.GET_CACHE_BY_IP:
             return await get_cache_by_ip(action.payload.ip)
 
     async def update(self, action: Action):
-        if action.kind == UPDATE_WHOIS_BY_IP:
+        if action.kind == Kind.UPDATE_WHOIS_BY_IP:
             return await update_whois_by_ip(
                 action.payload.ip,
                 action.payload.country,
