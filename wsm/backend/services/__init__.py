@@ -18,6 +18,13 @@ from .whois import (
     update_whois_by_ip,
     get_cache_by_ip,
 )
+from .stats import (
+    get_stats,
+    get_total_banned,
+    get_total_failed,
+    get_currently_banned,
+    get_currently_failed,
+)
 
 __all__ = [
     "create_allow",
@@ -39,4 +46,9 @@ __all__ = [
     "get_whois_by_ip",
     "update_whois_by_ip",
     "get_cache_by_ip",
+    "get_stats",
+    "get_total_banned",
+    "get_total_failed",
+    "get_currently_banned",
+    "get_currently_failed",
 ]

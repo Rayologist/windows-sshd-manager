@@ -40,7 +40,17 @@ if parser.get("subcmd") == "check":
     print(conf)
 
 if parser.get("subcmd") == "status":
-    print("status")
+
+    async def main():
+        print(
+            await report_stats(
+                log_path=conf.get("logpath"),
+                find_time=conf.get("findtime"),
+            )
+        )
+
+    asyncio.run(main())
+
 
 if parser.get("subcmd") == "search":
     print("search")
