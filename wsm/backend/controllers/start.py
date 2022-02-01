@@ -12,8 +12,8 @@ status_factory: Dict[str, Callable[[str, str, datetime], List]] = {
 
 
 async def start(file_path) -> None:
-    follower: BaseStatusFollower = AcceptedOrFailedStatusFollower(file_path)
-    for line in follower:
+    follower: BaseStatusFollower = AcceptedOrFailedStatusFollower(file_path, await_seconds=1)
+    async for line in follower:
         line: str = list(line)[0]
         if line["ip_address"] == "::1":
             continue
@@ -21,4 +21,3 @@ async def start(file_path) -> None:
         utc: datetime = parse_datetime(line["date"], line["time"])
         create(line["ip_address"], line["username"], utc)
         await create_whois(line["ip_address"])
-        await asyncio.sleep(1)

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import asyncio
 from typing import Dict
 import re
 
@@ -26,18 +27,26 @@ class BaseStatusFollower(ABC):
 
     SEEK_END: int = 2
 
-    def __init__(self, file_path: str):
+    def __init__(self, file_path: str, await_seconds: int = None):
         self.file_path = file_path
+        self.await_seconds = await_seconds
 
     @property
     @abstractmethod
     def status_class(self) -> BaseStatus:
         pass
 
-    def __iter__(self):
+    async def __aiter__(self):
         with open(self.file_path, "r") as f:
             f.seek(0, self.SEEK_END)
             while True:
+                if self.await_seconds is not None:
+                    # If this is None, banned ips will never be unbanned
+                    # until someone else access ssh service.
+                    # This is because the loop will keep "continue"
+                    # until it finds another extractable status
+                    await asyncio.sleep(self.await_seconds)
+
                 line = f.readline()
 
                 if not self.status_class.validate_status(line):
