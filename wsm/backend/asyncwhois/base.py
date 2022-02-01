@@ -3,6 +3,17 @@ from typing import List, Any
 from ipaddress import IPv4Address
 from dataclasses import dataclass, FrozenInstanceError
 from types import SimpleNamespace
+from enum import Enum, auto
+
+
+class Kind(Enum):
+    CREATE_WHOIS = auto()
+    GET_WHOIS = auto()
+    GET_WHOIS_BY_IP = auto()
+    GET_IP_WITHOUT_WHOIS = auto()
+    GET_IP_WITH_WHOIS = auto()
+    UPDATE_WHOIS_BY_IP = auto()
+    GET_CACHE_BY_IP = auto()
 
 
 class FrozenSimpleNamespace(SimpleNamespace):
@@ -15,7 +26,7 @@ class FrozenSimpleNamespace(SimpleNamespace):
 
 @dataclass(frozen=True)
 class Action:
-    kind: str
+    kind: Kind
     payload: dict
 
     def __post_init__(self):
