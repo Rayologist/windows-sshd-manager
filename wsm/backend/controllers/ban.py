@@ -12,9 +12,9 @@ def is_same_ips(ips, firewall_ips):
     return ips == firewall_ips
 
 
-def update_firewall() -> None:
+async def update_firewall() -> None:
     ps: PowerShell = PowerShell()
-    ips: List = get_banned_ips()
+    ips: List = await get_banned_ips()
     firewall_ips = ps.get_firewall_content()
 
     if not ips:
@@ -25,11 +25,11 @@ def update_firewall() -> None:
         return ps.block_ips(ips)
 
 
-def filter_to_ban(to_ban) -> None:
-    ips: Set = set(get_banned_ips())
+async def filter_to_ban(to_ban) -> None:
+    banned_ips: Set = set(await get_banned_ips())
     whitelist = set(get_allow())
     to_ban: Set = set(to_ban)
-    return list(to_ban - ips - whitelist)
+    return list(to_ban - banned_ips - whitelist)
 
 
 async def ban(find_time: int, ban_time: int, max_retry: int) -> None:
@@ -38,13 +38,13 @@ async def ban(find_time: int, ban_time: int, max_retry: int) -> None:
         start_time: datetime = end_time - timedelta(seconds=find_time)
         ban_from_now = generate_expire(ban_time)
         to_ban: List = get_to_ban(start_time, end_time, max_retry)
-        to_ban: List = filter_to_ban(to_ban)
+        to_ban: List = await filter_to_ban(to_ban)
         if to_ban:
             print(f"[BAN] ban: {to_ban} expire: {ban_from_now}")
             to_ban: map = map(lambda x: (x, ban_from_now), to_ban)
             create_many_banned(to_ban)
-        expired = delete_expired()
-        if expired:
-            print("[Expired] ", expired)
-        update_firewall()
+        # expired = delete_expired()
+        # if expired:
+        #     print("[Expired] ", expired)
+        await update_firewall()
         await asyncio.sleep(1)
