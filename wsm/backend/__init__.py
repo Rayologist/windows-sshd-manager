@@ -3,6 +3,6 @@ from .models.model import query, init_db, async_query
 from .followers import *
 from .services import *
 from .utils import parse_datetime, generate_expire, is_ipv4_address
-from .controllers import start, update_firewall, ban, whois
+from .controllers import follow, update_firewall, ban, whois, report_stats
 from .powershell import PowerShell
 from .asyncwhois import *

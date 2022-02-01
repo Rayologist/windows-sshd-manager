@@ -22,7 +22,7 @@ if parser.get("subcmd") != "config":
         )
 
 if parser.get("subcmd") == "start":
-    
+
     async def main():
         task = asyncio.create_task(
             ban(
@@ -31,7 +31,7 @@ if parser.get("subcmd") == "start":
                 max_retry=conf.get("maxretry"),
             )
         )
-        await asyncio.gather(start(conf["logpath"]), task, whois())
+        await asyncio.gather(follow(conf["logpath"]), task, whois())
 
     asyncio.run(main())
 
