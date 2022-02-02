@@ -5,6 +5,8 @@ from .banned import (
     delete_expired,
     get_banned_ips,
     delete_expired,
+    update_expire_by_ips,
+    get_banned_by_ip,
 )
 from .deny import create_deny
 from .failed import create_failed, get_failed, get_to_ban
@@ -51,4 +53,6 @@ __all__ = [
     "get_total_failed",
     "get_currently_banned",
     "get_currently_failed",
+    "update_expire_by_ips",
+    "get_banned_by_ip",
 ]
