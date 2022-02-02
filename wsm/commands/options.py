@@ -1,5 +1,6 @@
 import argparse
-import pathlib
+from pathlib import Path
+
 
 class WSMParser:
     def __init__(self):
@@ -134,7 +135,7 @@ class WSMParser:
 
         set_subconfig.add_argument(
             "--log-path",
-            type=pathlib.Path,
+            type=Path,
             help='register sshd.log path'
         )
         
@@ -190,17 +191,6 @@ class WSMParser:
             help='Get all config'
         )
         
-        # config.add_argument(
-        #     "--clear-banned-ips",
-        #     action="store_true",
-        #     help='clear banned ips',
-        # )
-
-        # config.add_argument(
-        #     "--clear-whois-cache",
-        #     action="store_true",
-        #     help='clear whois cache',
-        # )
      
     def add_check_subparser(self):
 
@@ -211,7 +201,7 @@ class WSMParser:
 
         check.add_argument(
             "-p", "--sshd_path",
-            type=pathlib.Path,
+            type=Path,
             help="SSH Log path",
         )
 
