@@ -1,7 +1,10 @@
 import sys
 import asyncio
+from typing import Dict, List
 import pandas as pd
 from pathlib import Path
+import json
+import toml
 
 path = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(path))
@@ -88,7 +91,25 @@ if parser.get("subcmd") == "whois":
     asyncio.run(main())
 
 if parser.get("subcmd") == "ban":
-    print("ban")
+    to_ban: List = parser.get("ban")
+    expire: str = parser.get("expire") and generate_expire(0) + parse_hms(
+        parser.get("expire")
+    )
+    get: bool = parser.get("get")
+    lift: bool = parser.get("lift")
+
+    if get and lift:
+        raise wsm_parser.error("--get and --lift can not co-exist")
+
+    elif get:
+        print(asyncio.run(manual_get_banned_ips(to_ban)))
+
+    elif lift:
+        asyncio.run(manual_unban(to_ban, expire))
+
+    else:
+        asyncio.run(manual_ban(to_ban, expire))
+
 
 
 if parser.get("subcmd") == "config":
