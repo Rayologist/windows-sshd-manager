@@ -12,7 +12,7 @@ wsm_parser = WSMParser()
 
 parser = vars(wsm_parser.parse_args())
 
-conf = get_config()["SSHD"]
+conf: Dict = get_config()["SSHD"]
 
 
 if parser.get("subcmd") != "config":

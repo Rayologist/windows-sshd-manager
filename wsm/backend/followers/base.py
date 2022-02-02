@@ -28,7 +28,7 @@ class BaseStatusFollower(ABC):
     SEEK_END: int = 2
 
     def __init__(self, file_path: str, await_seconds: int = None):
-        self.file_path = file_path
+        self.file_path: Path = file_path
         self.await_seconds = await_seconds
 
     @property

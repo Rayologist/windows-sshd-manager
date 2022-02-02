@@ -1,6 +1,6 @@
 import sqlite3
 import asyncio
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 from ..config import DB_PATH
 
 
@@ -13,7 +13,7 @@ def WSM_CONN() -> sqlite3.Connection:
 def query(
     command: str,
     params: Optional[Union[Tuple[Any], Dict[str, Any]]] = None,
-    mode: Optional[str] = None,
+    mode: Optional[Literal["script", "many"]] = None,
     row_factory=None,
 ) -> List:
 
@@ -39,7 +39,7 @@ def query(
 async def async_query(
     command: str,
     params: Optional[Union[Tuple[Any], Dict[str, Any]]] = None,
-    mode: Optional[str] = None,
+    mode: Optional[Literal["script", "many"]] = None,
     row_factory=None,
 ) -> List:
     loop = asyncio.get_running_loop()

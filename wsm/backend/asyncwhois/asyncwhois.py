@@ -47,12 +47,12 @@ class IPWhois(BaseAsyncWhois):
             self.lookup_failed.append(ip)
             return {"ip": ip, "whois": {"error": e}}
 
-    async def _limit_rate(self):
+    async def _limit_rate(self) -> None:
         if self.rate_limit:
             sleep_time = 1 / self.rate
             time.sleep(sleep_time)
 
-    async def _cached_async_whois(self, ip: IPv4Address):
+    async def _cached_async_whois(self, ip: IPv4Address, *args, **kwargs) -> Dict:
         response = await self.cache.read(Action(Kind.GET_CACHE_BY_IP, {"ip": ip}))
 
         if response == []:

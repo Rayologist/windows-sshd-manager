@@ -16,7 +16,7 @@ def generate_expire(seconds: int) -> datetime:
     return expire.astimezone(timezone.utc)
 
 
-def is_ipv4_address(ip):
+def is_ipv4_address(ip) -> Union[Literal[False], IPv4Address]:
     try:
         return IPv4Address(ip)
     except ValueError:
