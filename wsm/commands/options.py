@@ -63,21 +63,27 @@ class WSMParser:
         whois = self.subparser.add_parser(
             'whois',
             help="get whois ips",
+            
         )
 
         whois.add_argument(
             dest='whois',
-            nargs="*"
+            nargs="+"
         )
 
         whois.add_argument(
-            "-r", "--raw",
+            "--no-cache",
             action="store_true"
         )
 
         whois.add_argument(
-            "-v", "--verbose",
-            action="store_true"
+            "--save-path",
+            type=Path
+        )
+
+        whois.add_argument(
+            "--format",
+            type=str
         )
 
     def add_ban_subparser(self):

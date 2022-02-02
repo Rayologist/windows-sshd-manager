@@ -57,7 +57,35 @@ if parser.get("subcmd") == "search":
 
 
 if parser.get("subcmd") == "whois":
-    print("whois")
+    ips = parser.get("whois")
+    cache = not parser.get("no_cache")
+    save_path: Path = parser.get("save_path")
+    form = parser.get("format") or "toml"
+
+    def format_output(form, data):
+        if form == "json":
+            return json.dumps(data, indent=4, default=lambda x: str(x))
+
+        elif form == "toml":
+            return toml.dumps(data)
+
+    async def main() -> None:
+        async_whois = IPWhois()
+        whois = AsyncWhois(async_whois)
+        result = await whois.whois(ips, cache=cache)
+        result = dict(map(lambda x: (str(x["ip"]), x["whois"]), result))
+        if save_path is not None:
+            if save_path.is_file():
+                inp = input(f"Are you sure to overwrite '{save_path}'? (y/n): ")
+                if inp in {"y", "Y"}:
+                    save_path.write_text(format_output(form=form, data=result))
+
+            else:
+                save_path.write_text(format_output(form=form, data=result))
+
+        print(format_output(form=form, data=result))
+
+    asyncio.run(main())
 
 if parser.get("subcmd") == "ban":
     print("ban")
