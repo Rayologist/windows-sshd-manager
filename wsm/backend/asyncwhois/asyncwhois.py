@@ -1,7 +1,7 @@
 import asyncio
 import aiohttp
 from ipwhois import IPWhois as _IPWhois
-from typing import List, Iterable
+from typing import List, Iterable, Dict
 from .base import BaseAsyncWhois, Action, Kind
 from .cache import IPWhoisCacheHandler
 from .extractor import IPWhoisExtractor
@@ -19,16 +19,16 @@ class IPWhois(BaseAsyncWhois):
         self.rate = rate
         self.rate_limit = True
 
-    async def _whois(self, ip: IPv4Address):
+    async def _whois(self, ip: IPv4Address, *args, **kwargs) -> Dict:
         """A wrapper function for ipwhois.IPWhois"""
         loop = asyncio.get_running_loop()
         whois_obj = _IPWhois(ip)
-        return await loop.run_in_executor(None, whois_obj.lookup_rdap)
+        return await loop.run_in_executor(None, whois_obj.lookup_rdap, *args, **kwargs)
 
-    async def _async_whois(self, ip: IPv4Address):
+    async def _async_whois(self, ip: IPv4Address, *args, **kwargs) -> Dict:
         try:
             await self._limit_rate()
-            response = await self._whois(ip)
+            response = await self._whois(ip, *args, **kwargs)
             extracted = self.extractor.extract(response)
             await self.cache.update(
                 Action(
@@ -56,21 +56,29 @@ class IPWhois(BaseAsyncWhois):
         response = await self.cache.read(Action(Kind.GET_CACHE_BY_IP, {"ip": ip}))
 
         if response == []:
-            return await self._async_whois(ip)
+            return await self._async_whois(ip, *args, **kwargs)
 
         return {"ip": ip, "whois": response}
 
-    async def async_whois(self, ips: Iterable[IPv4Address], cache: bool = True):
+    async def async_whois(
+        self, ips: Iterable[IPv4Address], cache: bool = True, *args, **kwargs
+    ):
         if len(ips) <= 5:
             self.rate_limit = False
         else:
             self.rate_limit = True
 
         if not cache:
-            tasks = [asyncio.create_task(self._async_whois(ip)) for ip in ips]
+            tasks = [
+                asyncio.create_task(self._async_whois(ip, *args, **kwargs))
+                for ip in ips
+            ]
             return await asyncio.gather(*tasks)
 
-        cached_tasks = [asyncio.create_task(self._cached_async_whois(ip)) for ip in ips]
+        cached_tasks = [
+            asyncio.create_task(self._cached_async_whois(ip, *args, **kwargs))
+            for ip in ips
+        ]
         return await asyncio.gather(*cached_tasks)
 
 
