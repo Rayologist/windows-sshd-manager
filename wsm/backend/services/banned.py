@@ -23,6 +23,27 @@ async def get_banned_ips() -> List:
     )
 
 
+async def get_banned_by_ip(ip):
+    return await async_query(
+        "SELECT * FROM banned as b WHERE ip = ?",
+        (ip,),
+        row_factory=lambda cursor, row: {"ip": row[0], "expire (UTC)": row[1]},
+    )
+
+
+async def update_expire_by_ips(ips, expire) -> List:
+    return await async_query(
+        """
+        UPDATE banned
+        SET expire = :expire
+        WHERE expire > :now
+        AND ip = :ip
+        """,
+        [{"now": generate_expire(0), "expire": expire, "ip": ip} for ip in ips],
+        mode="many",
+    )
+
+
 def delete_expired() -> List:
     return query(
         "DELETE FROM banned WHERE expire < ? RETURNING ip",
