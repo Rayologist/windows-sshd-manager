@@ -1,8 +1,12 @@
 from datetime import datetime, timezone, timedelta
 from ipaddress import IPv4Address
+from typing import Dict, Literal, Union
+from functools import reduce
+import re
 
 
 def parse_datetime(date: str, time: str) -> datetime:
+    """Infer local time zone from ssh log and transform date and time to UTC"""
     local_timezone = datetime.now(timezone.utc).astimezone().tzinfo
     return (
         datetime.fromisoformat(f"{date} {time}")
@@ -21,3 +25,24 @@ def is_ipv4_address(ip) -> Union[Literal[False], IPv4Address]:
         return IPv4Address(ip)
     except ValueError:
         return False
+
+
+def _parse_hms(amount: int, unit: Literal["d", "h", "m", "s"]) -> timedelta:
+    unit_mapping: Dict = {"d": "days", "h": "hours", "m": "minutes", "s": "seconds"}
+    return timedelta(**{unit_mapping[unit]: amount})
+
+
+def parse_hms(string: str) -> timedelta:
+    duplicated = re.findall(r"([dhms]).*\1", string)
+    if duplicated:
+        raise ValueError(
+            f"Duplicate: '{', '.join(duplicated)}' in the string '{string}'"
+        )
+
+    extracted_hms = re.findall(r"(\d+)([dhms])", string)
+
+    return reduce(
+        lambda x, y: x + y,
+        [_parse_hms(int(amount), unit) for amount, unit in extracted_hms],
+        timedelta(),
+    )
