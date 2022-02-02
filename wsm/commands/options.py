@@ -93,32 +93,25 @@ class WSMParser:
         )
 
         ban.add_argument(
-            "-d", "--day",
-            help="banned failed password at a given day"
-        )
-        
-        ban.add_argument(
-            '--ips',
+            dest="ban",
             nargs="*",
             help='ban ips'
         )
-
-        # ban.add_argument(
-        #     "-s", "--search-banned-ip",
-        #     nargs="*",
-        #     help="search whether the given ips are banned"
-        # )
-
-        ban.add_argument(
-            "-f", "--firewall",
-            action="store_true"
-        )
         
         ban.add_argument(
-            "-c", "--check-banned",
-            help='check failed ip to ban',
-            action='store_true'
+            '--expire',
+            type=str
         )
+        ban.add_argument(
+            '--get',
+            action="store_true"
+        )
+
+        ban.add_argument(
+            '--lift',
+            action="store_true"
+        )
+
 
     def add_config_subparser(self):
         config = self.subparser.add_parser(
