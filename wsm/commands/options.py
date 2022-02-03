@@ -24,6 +24,25 @@ class WSMParser:
         self.add_status_parser()
         self.add_start_parser()
         self.add_allow_parser()
+        self.add_deny_parser()
+
+    def add_deny_parser(self):
+        deny = self.subparser.add_parser(
+            "deny",
+            help="Deny ips from access forever"
+        )
+
+        deny.add_argument(
+            dest="deny",
+            nargs="+",
+        )
+
+        deny.add_argument(
+            "--lift",
+            action="store_true",
+            help="Lift deny on ips"
+        )
+    
     def add_allow_parser(self):
         allow = self.subparser.add_parser(
             "allow",
@@ -112,7 +131,7 @@ class WSMParser:
 
         ban.add_argument(
             dest="ban",
-            nargs="*",
+            nargs="+",
             help='ban ips'
         )
         
