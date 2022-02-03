@@ -102,7 +102,9 @@ if parser.get("subcmd") == "ban":
         raise wsm_parser.error("--get and --lift can not co-exist")
 
     elif get:
-        print(asyncio.run(manual_get_banned_ips(to_ban)))
+        result = asyncio.run(manual_get_banned_ips(to_ban))
+        if not result.empty:
+            print(result)
 
     elif lift:
         asyncio.run(manual_unban(to_ban, expire))
