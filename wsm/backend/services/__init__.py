@@ -1,4 +1,4 @@
-from .allow import create_allow, get_allow
+from .allow import create_allow, get_allow, delete_allow
 from .banned import (
     create_banned,
     create_many_banned,
@@ -8,7 +8,7 @@ from .banned import (
     update_expire_by_ips,
     get_banned_by_ip,
 )
-from .deny import create_deny
+from .deny import create_deny, get_deny, delete_deny
 from .failed import create_failed, get_failed, get_to_ban
 from .success import create_success
 from .whois import (
@@ -55,4 +55,7 @@ __all__ = [
     "get_currently_failed",
     "update_expire_by_ips",
     "get_banned_by_ip",
+    "get_deny",
+    "delete_allow",
+    "delete_deny"
 ]
