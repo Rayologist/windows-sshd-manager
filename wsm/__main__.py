@@ -38,9 +38,25 @@ if parser.get("subcmd") == "start":
 
     asyncio.run(main())
 
-if parser.get("subcmd") == "check":
-    print(f"check: {parser.get('check')}")
-    print(conf)
+if parser.get("subcmd") == "allow":
+    to_allow: List = parser.get("allow")
+    lift: bool = parser.get("lift")
+
+    if lift:
+        lift_allow(to_allow)
+    else:
+        allow(to_allow)
+
+
+if parser.get("subcmd") == "deny":
+    to_deny: List = parser.get("deny")
+    lift: bool = parser.get("lift")
+
+    if lift:
+        lift_deny(to_deny)
+    else:
+        deny(to_deny)
+
 
 if parser.get("subcmd") == "status":
 
@@ -55,8 +71,8 @@ if parser.get("subcmd") == "status":
     asyncio.run(main())
 
 
-if parser.get("subcmd") == "search":
-    print("search")
+if parser.get("subcmd") == "report":
+    print("report")
 
 
 if parser.get("subcmd") == "whois":
@@ -111,7 +127,6 @@ if parser.get("subcmd") == "ban":
 
     else:
         asyncio.run(manual_ban(to_ban, expire))
-
 
 
 if parser.get("subcmd") == "config":
