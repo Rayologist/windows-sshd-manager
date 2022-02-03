@@ -23,6 +23,23 @@ class WSMParser:
         self.add_search_parser()
         self.add_status_parser()
         self.add_start_parser()
+        self.add_allow_parser()
+    def add_allow_parser(self):
+        allow = self.subparser.add_parser(
+            "allow",
+            help="Deny ips from access forever"
+        )
+
+        allow.add_argument(
+            dest="allow",
+            nargs="+",
+        )
+
+        allow.add_argument(
+            "--lift",
+            action="store_true",
+            help="Lift allow on ips"
+        )
 
     def add_start_parser(self):
         start = self.subparser.add_parser(
