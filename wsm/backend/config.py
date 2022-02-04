@@ -24,8 +24,10 @@ def check_config() -> None:
         )
         CONFIG_PATH.write_text(content)
 
+
 def get_config() -> Dict:
     return toml.load(CONFIG_PATH)
+
 
 def update_config(updates: Dict[str, Dict[str, Union[int, str]]]) -> None:
     updates["SSHD"]["logpath"] = str(updates["SSHD"]["logpath"])

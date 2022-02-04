@@ -14,7 +14,7 @@ from .controllers import (
     deny,
     lift_deny,
     allow,
-    lift_allow
+    lift_allow,
 )
 from .powershell import PowerShell
 from .asyncwhois import *

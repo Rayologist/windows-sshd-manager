@@ -42,10 +42,11 @@ class PowerShell1:
         )
         return self.run(script)
 
+
 class PowerShell:
     def __init__(self):
         self.name: str = "wsm"
-        self.firewall= "/Users/rayologist/Desktop/wsm/firewall.txt"
+        self.firewall = "/Users/rayologist/Desktop/wsm/firewall.txt"
 
     def block_ips(self, ips: Iterable[str]):
         concat_ips: str = ", ".join(map(lambda x: f"'{x}'", ips))
@@ -53,7 +54,7 @@ class PowerShell:
             processed = concat_ips.replace("'", "").replace(", ", "\n")
             f.write(processed)
 
-        return 
+        return
 
     def set_execution_policy(self):
         # script: str = (
@@ -61,10 +62,10 @@ class PowerShell:
         #     f"{{Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force}}"
         # )
         print("Set execution policy")
-        return 
+        return
 
     def get_firewall_content(self):
-        with open(self.firewall, 'r') as f:
+        with open(self.firewall, "r") as f:
             content = f.read()
         return content
         # return self.run(script)

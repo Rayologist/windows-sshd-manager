@@ -12,7 +12,9 @@ def deny(ips):
     allowed = set(get_allow())
     currently_denied = set(get_deny())
     if ips & allowed:
-        print("Plese lift allow before denying the following: ", ", ".join(ips & allowed))
+        print(
+            "Plese lift allow before denying the following: ", ", ".join(ips & allowed)
+        )
     to_deny: List = list(ips - allowed - currently_denied)
     if to_deny:
         return create_deny(to_deny)

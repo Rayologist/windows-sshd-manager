@@ -14,7 +14,7 @@ async def get_stats(find_time: int) -> List:
             get_total_failed(),
             get_currently_banned(),
             get_total_banned(),
-            get_banned_ips()
+            get_banned_ips(),
         ],
     )
     return await asyncio.gather(*tasks)

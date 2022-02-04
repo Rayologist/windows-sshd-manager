@@ -11,9 +11,11 @@ def allow(ips: List):
     ips = set(ips)
     denied = set(get_deny())
     if ips & denied:
-        print("Plese lift deny before allowing the following: ", ", ".join(ips & denied))
+        print(
+            "Plese lift deny before allowing the following: ", ", ".join(ips & denied)
+        )
     currently_allowed = set(get_allow())
-    to_allow: List = list(ips  - denied - currently_allowed)
+    to_allow: List = list(ips - denied - currently_allowed)
 
     if to_allow:
         return create_allow(to_allow)

@@ -57,5 +57,5 @@ __all__ = [
     "get_banned_by_ip",
     "get_deny",
     "delete_allow",
-    "delete_deny"
+    "delete_deny",
 ]
