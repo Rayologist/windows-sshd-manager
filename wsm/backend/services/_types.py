@@ -1,2 +1,2 @@
 from datetime import datetime
-from typing import List, Iterable, Tuple
+from typing import List, Iterable, Tuple, Literal
