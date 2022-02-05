@@ -10,8 +10,10 @@ class AsyncWhois:
         self._whois_result = None
 
     async def whois(self, ips: Iterable[str], cache: bool = True) -> List:
-        ips = self.filter_ips(ips)
-        self._whois_result = await self._whois.async_whois(ips=ips, cache=cache)
+        filtered_ips = self.filter_ips(ips)
+        self._whois_result = await self._whois.async_whois(
+            ips=filtered_ips, cache=cache
+        )
         return self._whois_result
 
     def filter_ips(self, ips: Iterable[str]) -> List[IPv4Address]:
