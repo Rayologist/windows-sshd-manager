@@ -1,8 +1,10 @@
 from datetime import datetime, timezone, timedelta
 from ipaddress import IPv4Address
-from typing import Dict, Literal, Union
+from pathlib import Path
+from typing import Dict, Literal, Tuple, Union, List
 from functools import reduce
 import re
+from dateutil.parser import parse
 
 
 def parse_datetime(date: str, time: str) -> datetime:
@@ -56,6 +58,22 @@ def parse_hms(string: str) -> timedelta:
         [_parse_hms(int(amount), unit) for amount, unit in extracted_hms],
         timedelta(),
     )
+
+
+def parse_interval(interval: List[str]) -> Tuple[datetime, datetime]:
+    start_time: datetime
+    end_time: datetime
+
+    if len(interval) == 2:
+        start_time, end_time = sorted(map(parse, interval))
+    elif re.findall(r"[hms]", interval[0]):
+        hms: str = interval[0]
+        end_time = datetime.now(timezone.utc)
+        start_time = end_time - parse_hms(hms)
+    else:
+        raise ValueError("Invalid interval")
+
+    return start_time, end_time
 
 
 def check_overwritable(save_path: Union[str, Path]) -> bool:
