@@ -16,13 +16,11 @@ class WSMParser:
             required=True
         )
         
-        self.add_check_subparser()
         self.add_config_subparser()
+        self.add_start_parser()
         self.add_ban_subparser()
         self.add_whois_parser()
-        self.add_search_parser()
         self.add_status_parser()
-        self.add_start_parser()
         self.add_allow_parser()
         self.add_deny_parser()
         self.add_report_parser()
@@ -41,16 +39,22 @@ class WSMParser:
         )
 
         report.add_argument(
+            "-d", "--day",
+            help="Get report of the given day",
+            type=str
+        )
+
+        report.add_argument(
             "-r", "--range",
             nargs="+",
-            help="Display report of a certain date range"
+            help="Display report of the given date range"
         )
 
         report.add_argument(
             "--group-by",
             type=str,
             choices=['ip', 'username', 'country'],
-            help="Group data by a certain columns"
+            help="Group data by the given column"
         )
 
         report.add_argument(
@@ -58,7 +62,7 @@ class WSMParser:
             type=str,
             choices=["failed", 'success', 'banned'],
             default="failed",
-            help="Group data by a certain columns"
+            help="Group data by the given column"
         )
 
         report.add_argument(
@@ -126,18 +130,6 @@ class WSMParser:
             help="Display wsm status"
         )
     
-    def add_search_parser(self):
-        search = self.subparser.add_parser(
-            "search",
-            help="Search data of given ips "
-        )
-
-        search.add_argument(
-            dest="search",
-            nargs="*",
-            help="Search a list of ips in failed and accepted dataframe"
-        )
-
     def add_whois_parser(self):
         whois = self.subparser.add_parser(
             'whois',
@@ -190,7 +182,6 @@ class WSMParser:
             '--lift',
             action="store_true"
         )
-
 
     def add_config_subparser(self):
         config = self.subparser.add_parser(
@@ -269,56 +260,6 @@ class WSMParser:
             help='Get all config'
         )
         
-     
-    def add_check_subparser(self):
-
-        check = self.subparser.add_parser(
-            "check",
-            help="check log status",
-        )
-
-        check.add_argument(
-            "-p", "--sshd_path",
-            type=Path,
-            help="SSH Log path",
-        )
-
-        check.add_argument(
-            dest="check",
-            type=str,
-            help="Return a dataframe concerning the status given, e.g. failed, accepted",
-        )
-
-        day = check.add_argument_group(
-            "Day",
-            description="Select which day you would like to check",
-        )
-
-        day.add_argument(
-            "-d",
-            "--day",
-            type=str,
-        )
-
-        from_to = check.add_argument_group(
-            "Interval",
-            description="please select an interval",
-        )
-
-        from_to.add_argument(
-            "-s",
-            "--start",
-            type=str,
-            help="Select a start day you would like to check",
-        )
-
-        from_to.add_argument(
-            "-e",
-            "--end",
-            type=str,
-            help="Select a start day you would like to check",
-        )
-
     def parse_args(self):
         return self.parser.parse_args()
 
