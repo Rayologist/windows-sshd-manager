@@ -1,4 +1,3 @@
-from typing import Iterable
 from ._types import List
 from ..models.model import query
 from datetime import datetime
