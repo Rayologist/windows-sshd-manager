@@ -43,10 +43,11 @@ class PowerShell1:
         return self.run(script)
 
 
-class PowerShell:
-    def __init__(self):
-        self.name: str = "wsm"
-        self.firewall = "/Users/rayologist/Desktop/wsm/firewall.txt"
+def init_firewall() -> None:
+    ps = PowerShell()
+    asyncio.run(ps.set_new_firewall_rule())
+
+
 
     def block_ips(self, ips: Iterable[str]):
         concat_ips: str = ", ".join(map(lambda x: f"'{x}'", ips))

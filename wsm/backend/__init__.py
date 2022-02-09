@@ -24,5 +24,5 @@ from .controllers import (
     lift_allow,
     report,
 )
-from .powershell import PowerShell
+from .powershell import PowerShell, init_firewall
 from .asyncwhois import *
