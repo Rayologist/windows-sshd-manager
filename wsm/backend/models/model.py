@@ -47,8 +47,6 @@ async def async_query(
 
 
 def init_db() -> None:
-    if DB_PATH.is_file():
-        return
 
     table = """
         BEGIN TRANSACTION;
