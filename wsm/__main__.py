@@ -1,10 +1,12 @@
 import sys
 import asyncio
-from typing import Dict, List
+from typing import Dict, List, Literal
 import pandas as pd
 from pathlib import Path
 import json
 import toml
+from dateutil.parser import parse
+from datetime import datetime, timedelta, timezone
 
 path = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(path))
@@ -72,7 +74,34 @@ if parser.get("subcmd") == "status":
 
 
 if parser.get("subcmd") == "report":
-    print("report")
+    report_yesterday: bool = parser.get("yesterday")
+    interval: List[str] = parser.get("range")
+    group_by: Literal["ip", "username", "country"] = parser.get("group_by")
+    table: Literal["failed", "success", "banned"] = parser.get("table")
+    save_path: Path = parser.get("save_path")
+
+    now = datetime.now(timezone.utc)
+    today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    yesterday = today - timedelta(days=1)
+
+    if report_yesterday:
+        start_time = yesterday
+        end_time = today
+    elif interval is not None:
+        start_time, end_time = parse_interval(interval=interval)
+    else:
+        start_time = today
+        end_time = now
+
+    report_result = report(
+        start_time=start_time,
+        end_time=end_time,
+        table=table,
+        group_by=group_by,
+        save_path=save_path,
+    )
+
+    print(pd.DataFrame(report_result))
 
 
 if parser.get("subcmd") == "whois":

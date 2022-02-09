@@ -27,6 +27,7 @@ from .stats import (
     get_currently_banned,
     get_currently_failed,
 )
+from .report import get_table_by_interval, get_table_group_by_col
 
 __all__ = [
     "create_allow",
@@ -58,4 +59,6 @@ __all__ = [
     "get_deny",
     "delete_allow",
     "delete_deny",
+    "get_table_by_interval", 
+    "get_table_group_by_col"
 ]

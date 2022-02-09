@@ -4,6 +4,7 @@ from .whois import whois
 from .stats import report_stats
 from .allow import allow, lift_allow
 from .deny import deny, lift_deny
+from .report import report
 
 __all__ = [
     "follow",
@@ -18,4 +19,5 @@ __all__ = [
     "lift_allow",
     "deny",
     "lift_deny",
+    "report",
 ]
