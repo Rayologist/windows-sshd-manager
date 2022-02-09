@@ -46,3 +46,18 @@ def parse_hms(string: str) -> timedelta:
         [_parse_hms(int(amount), unit) for amount, unit in extracted_hms],
         timedelta(),
     )
+
+
+def check_overwritable(save_path: Union[str, Path]) -> bool:
+    if not isinstance(save_path, Path):
+        save_path = Path(save_path)
+
+    if not save_path.is_file():
+        return True
+
+    inp = input(f"Are you sure to overwrite '{save_path}'? (y/n): ")
+
+    if inp in {"y", "Y"}:
+        return True
+
+    return False

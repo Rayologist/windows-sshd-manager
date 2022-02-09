@@ -94,12 +94,8 @@ if parser.get("subcmd") == "whois":
         result = await whois.whois(ips, cache=cache)
         result = dict(map(lambda x: (str(x["ip"]), x["whois"]), result))
         if save_path is not None:
-            if save_path.is_file():
-                inp = input(f"Are you sure to overwrite '{save_path}'? (y/n): ")
-                if inp in {"y", "Y"}:
-                    save_path.write_text(format_output(form=form, data=result))
-
-            else:
+            can_overwrite = check_overwritable(save_path)
+            if can_overwrite:
                 save_path.write_text(format_output(form=form, data=result))
 
         print(format_output(form=form, data=result))
