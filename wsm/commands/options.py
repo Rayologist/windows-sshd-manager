@@ -25,6 +25,48 @@ class WSMParser:
         self.add_start_parser()
         self.add_allow_parser()
         self.add_deny_parser()
+        self.add_report_parser()
+        
+
+    def add_report_parser(self):
+        report = self.subparser.add_parser(
+            "report",
+            help="Generate report for sshd status"
+        )
+
+        report.add_argument(
+            "-y", "--yesterday",
+            help="Get report of yesterday",
+            action="store_true"
+        )
+
+        report.add_argument(
+            "-r", "--range",
+            nargs="+",
+            help="Display report of a certain date range"
+        )
+
+        report.add_argument(
+            "--group-by",
+            type=str,
+            choices=['ip', 'username', 'country'],
+            help="Group data by a certain columns"
+        )
+
+        report.add_argument(
+            "--table",
+            type=str,
+            choices=["failed", 'success', 'banned'],
+            default="failed",
+            help="Group data by a certain columns"
+        )
+
+        report.add_argument(
+            "--save-path",
+            type=Path,
+            help="Save report to the given path"
+        )
+    
 
     def add_deny_parser(self):
         deny = self.subparser.add_parser(
