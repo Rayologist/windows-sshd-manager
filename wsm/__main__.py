@@ -74,26 +74,35 @@ if parser.get("subcmd") == "status":
 
 
 if parser.get("subcmd") == "report":
+    start_time: datetime
+    end_time: datetime
     report_yesterday: bool = parser.get("yesterday")
     interval: List[str] = parser.get("range")
     group_by: Literal["ip", "username", "country"] = parser.get("group_by")
     table: Literal["failed", "success", "banned"] = parser.get("table")
     save_path: Path = parser.get("save_path")
+    day: str = parser.get("day")
 
     now = datetime.now(timezone.utc)
     today = now.replace(hour=0, minute=0, second=0, microsecond=0)
     yesterday = today - timedelta(days=1)
 
-    if report_yesterday:
+    if day is not None:
+        start_time = parse(day)
+        end_time = start_time.date() + timedelta(days=1)
+
+    elif report_yesterday:
         start_time = yesterday
         end_time = today
+
     elif interval is not None:
         start_time, end_time = parse_interval(interval=interval)
+
     else:
         start_time = today
         end_time = now
 
-    report_result = report(
+    report_result: pd.DataFrame = report(
         start_time=start_time,
         end_time=end_time,
         table=table,
@@ -101,7 +110,11 @@ if parser.get("subcmd") == "report":
         save_path=save_path,
     )
 
-    print(pd.DataFrame(report_result))
+    if not report_result.empty:
+        print(report_result)
+    else:
+        print("Not found")
+
 
 
 if parser.get("subcmd") == "whois":
