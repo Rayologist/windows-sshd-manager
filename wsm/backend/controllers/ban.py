@@ -85,8 +85,10 @@ async def filter_to_unban(to_unban):
 async def manual_unban(to_unban, expire=None) -> None:
     if expire == None:
         expire = generate_expire(0)
-    to_unban = filter_to_ban(to_unban)
-    await update_expire_by_ips(to_unban, expire)
+    to_unban = await filter_to_unban(to_unban)
+    if (to_unban):
+        await update_expire_by_ips(to_unban, expire)
+        await update_firewall()
 
 
 async def manual_get_banned_ips(ips) -> pd.DataFrame:
