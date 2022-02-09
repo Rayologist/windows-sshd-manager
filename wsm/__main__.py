@@ -22,8 +22,8 @@ conf: Dict = get_config()["SSHD"]
 
 if parser.get("subcmd") != "config":
     if conf["logpath"] == "":
-        raise NameError(
-            f'Please use "wsm config --log-path your/path" to first configure path.'
+        raise AttributeError(
+            f'Log path not found: Please use "wsm config --log-path your/path" to first configure path.'
         )
 
 if parser.get("subcmd") == "start":
@@ -114,7 +114,6 @@ if parser.get("subcmd") == "report":
         print(report_result)
     else:
         print("Not found")
-
 
 
 if parser.get("subcmd") == "whois":
