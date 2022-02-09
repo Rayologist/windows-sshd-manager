@@ -8,11 +8,21 @@ import re
 def parse_datetime(date: str, time: str) -> datetime:
     """Infer local time zone from ssh log and transform date and time to UTC"""
     local_timezone = datetime.now(timezone.utc).astimezone().tzinfo
-    return (
+    date_time: datetime = (
         datetime.fromisoformat(f"{date} {time}")
         .replace(tzinfo=local_timezone)
         .astimezone(timezone.utc)
     )
+
+    # SQLite converter will raise an error
+    # if a timestamp does not have microseconds,
+    # but comes with timezone information
+    has_microseconds: bool = bool(date_time.time().microsecond)
+
+    if not has_microseconds:
+        date_time = date_time + timedelta(microseconds=1)
+
+    return date_time
 
 
 def generate_expire(seconds: int) -> datetime:
