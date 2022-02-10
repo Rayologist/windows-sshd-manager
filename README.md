@@ -6,6 +6,29 @@ Windows SSHD Manager is a command line tool for reducing failed login attemps fr
 
 > Currently, there's no binary version of `wsm`; therefore, the following commands should come with python/python3 as the first word, e.g. `python3 wsm start` instead of `wsm start`
 
+### 0. Installation
+
+1. Python version
+   * `python >= 3.6`
+
+2. Clone repository
+
+    ```bash
+    git clone git@github.com:Rayologist/windows-sshd-manager.git
+    ```
+
+3. Install Requirement
+
+    ```bash
+    pip install -r requirement.txt      
+    ```
+
+4. Start
+
+    ```bash
+    cd windows-sshd-manager && python3 wsm start
+    ```
+
 ### 1. Configuration
 
 > Firstly, please configure log path using the following command: `wsm config set --log-path your/path`, or an `AtrributeError` will be raised.
@@ -78,11 +101,9 @@ wsm status
 
 ### Show reports of failed, success and banned ips
 
-
 > 1. There are three tables that can be reported: `failed (default)`, `success` and `banned`
 > 2. There are three columns that can be grouped by: `ip`, `username`, and `country`
 > 3. Date and time are stored in `UTC`
-
 
 * Report of current failed ips
 
