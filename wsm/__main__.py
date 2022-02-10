@@ -23,7 +23,7 @@ conf: Dict = get_config()["SSHD"]
 if parser.get("subcmd") != "config":
     if conf["logpath"] == "":
         raise AttributeError(
-            f'Log path not found: Please use "wsm config --log-path your/path" to first configure path.'
+            f'Log path not found: Please use "wsm config set --log-path your/path" to first configure path.'
         )
 
 if parser.get("subcmd") == "start":
