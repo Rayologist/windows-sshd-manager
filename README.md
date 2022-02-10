@@ -20,13 +20,13 @@ Windows SSHD Manager is a command line tool for reducing failed login attemps fr
 3. Install Requirement
 
     ```bash
-    pip install -r requirement.txt      
+    cd windows-sshd-manager && pip install -r requirement.txt      
     ```
 
 4. Start
 
     ```bash
-    cd windows-sshd-manager && python3 wsm start
+    python3 wsm start
     ```
 
 ### 1. Configuration
