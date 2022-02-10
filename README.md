@@ -4,8 +4,6 @@ Windows SSHD Manager is a command line tool for reducing failed login attemps fr
 
 ## Documentation
 
----
-
 > Currently, there's no binary version of `wsm`; therefore, the following commands should come with python/python3 as the first word, e.g. `python3 wsm start` instead of `wsm start`
 
 ### 1. Configuration
@@ -202,5 +200,4 @@ wsm deny --lift 8.8.8.8 66.220.144.0
 
 ## Contact
 
----
 If you have any suggestion or question, please do not hesitate to email me at rayologist1002@gmail.com
