@@ -86,7 +86,7 @@ async def manual_unban(to_unban, expire=None) -> None:
     if expire == None:
         expire = generate_expire(0)
     to_unban = await filter_to_unban(to_unban)
-    if (to_unban):
+    if to_unban:
         await update_expire_by_ips(to_unban, expire)
         await update_firewall()
 
