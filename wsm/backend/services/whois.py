@@ -57,7 +57,7 @@ async def update_whois_by_ip(ip, country, cache):
         """
         INSERT INTO whois (ip, country, cache) 
         VALUES (:ip, :country, :cache) 
-        ON CONFLICT DO 
+        ON CONFLICT (ip) DO 
         UPDATE 
         SET country=:country, cache=:cache
         """,
