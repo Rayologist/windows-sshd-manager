@@ -19,7 +19,7 @@ import pandas as pd
 
 
 def is_same_ips(ips, firewall_ips):
-    ips = "\n".join(ips)
+    ips = "\r\n".join(ips) + "\r\n"
     return ips == firewall_ips
 
 
