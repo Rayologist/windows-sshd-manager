@@ -145,7 +145,7 @@ if parser.get("subcmd") == "whois":
 
 if parser.get("subcmd") == "ban":
     to_ban: List = parser.get("ban")
-    expire: str = parser.get("expire") and generate_expire(0) + parse_hms(
+    expire: str = parser.get("expire") and generate_expire(0) + parse_dhms(
         parser.get("expire")
     )
     get: bool = parser.get("get")

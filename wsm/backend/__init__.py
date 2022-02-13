@@ -5,7 +5,7 @@ from .utils import (
     parse_datetime,
     generate_expire,
     is_ipv4_address,
-    parse_hms,
+    parse_dhms,
     parse_interval,
     check_overwritable,
 )

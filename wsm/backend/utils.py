@@ -39,12 +39,12 @@ def is_ipv4_address(ip) -> Union[Literal[False], IPv4Address]:
         return False
 
 
-def _parse_hms(amount: int, unit: Literal["d", "h", "m", "s"]) -> timedelta:
+def _parse_dhms(amount: int, unit: Literal["d", "h", "m", "s"]) -> timedelta:
     unit_mapping: Dict = {"d": "days", "h": "hours", "m": "minutes", "s": "seconds"}
     return timedelta(**{unit_mapping[unit]: amount})
 
 
-def parse_hms(string: str) -> timedelta:
+def parse_dhms(string: str) -> timedelta:
     duplicated = re.findall(r"([dhms]).*\1", string)
     if duplicated:
         raise ValueError(
@@ -55,7 +55,7 @@ def parse_hms(string: str) -> timedelta:
 
     return reduce(
         lambda x, y: x + y,
-        [_parse_hms(int(amount), unit) for amount, unit in extracted_hms],
+        [_parse_dhms(int(amount), unit) for amount, unit in extracted_hms],
         timedelta(),
     )
 
@@ -66,10 +66,10 @@ def parse_interval(interval: List[str]) -> Tuple[datetime, datetime]:
 
     if len(interval) == 2:
         start_time, end_time = sorted(map(parse, interval))
-    elif re.findall(r"[hms]", interval[0]):
+    elif re.findall(r"[dhms]", interval[0]):
         hms: str = interval[0]
         end_time = datetime.now(timezone.utc)
-        start_time = end_time - parse_hms(hms)
+        start_time = end_time - parse_dhms(hms)
     else:
         raise ValueError("Invalid interval")
 
