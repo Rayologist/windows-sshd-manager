@@ -26,14 +26,14 @@ def is_same_ips(ips, firewall_ips):
 async def update_firewall() -> None:
     ps: PowerShell = PowerShell()
     ips: List = await get_banned_ips()
-    firewall_ips = ps.get_firewall_content()
+    firewall_ips = await ps.get_firewall_content()
 
     if not ips:
         ips = ["0.0.0.0"]
 
     if not is_same_ips(ips, firewall_ips):
         print(f"[FIREWALL]: write {ips}")
-        return ps.block_ips(ips)
+        return await ps.block_ips(ips)
 
 
 async def filter_to_ban(to_ban) -> None:
