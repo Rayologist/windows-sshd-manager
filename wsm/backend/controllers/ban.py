@@ -14,31 +14,31 @@ from ..services import (
 from ..powershell import PowerShell
 from ..config import get_config
 from datetime import datetime, timedelta
-from typing import List, Set
+from typing import List, Optional, Set
 import pandas as pd
 
 
-def is_same_ips(ips, firewall_ips):
-    ips = "\r\n".join(ips) + "\r\n"
+def is_same_ips(ips: List[str], firewall_ips: str) -> bool:
+    ips: str = "\r\n".join(ips) + "\r\n"
     return ips == firewall_ips
 
 
 async def update_firewall() -> None:
     ps: PowerShell = PowerShell()
     ips: List = await get_banned_ips()
-    firewall_ips = await ps.get_firewall_content()
+    firewall_ips: str = await ps.get_firewall_content()
 
     if not ips:
-        ips = ["0.0.0.0"]
+        ips: List[str] = ["0.0.0.0"]
 
     if not is_same_ips(ips, firewall_ips):
         print(f"[FIREWALL]: write {ips}")
         return await ps.block_ips(ips)
 
 
-async def filter_to_ban(to_ban) -> None:
+async def filter_to_ban(to_ban) -> List:
     banned_ips: Set = set(await get_banned_ips())
-    whitelist = set(get_allow())
+    whitelist: Set = set(get_allow())
     to_ban: Set = set(to_ban)
     return list(to_ban - banned_ips - whitelist)
 
@@ -59,14 +59,14 @@ async def ban(find_time: int, ban_time: int, max_retry: int) -> None:
 
 
 async def manual_ban(to_ban: List, expire: datetime = None) -> None:
-    invalid_ips = list(filter(lambda x: not is_ipv4_address(x), to_ban))
+    invalid_ips: List = list(filter(lambda x: not is_ipv4_address(x), to_ban))
     if invalid_ips:
         print(f"Invalid ip address(es): {', '.join(invalid_ips)} ")
         return
     if expire is None:
-        ban_time = get_config()["SSHD"].get("bantime")
-        expire = generate_expire(ban_time)
-    create_whois_tasks = [asyncio.create_task(create_whois(ip)) for ip in to_ban]
+        ban_time: int = get_config()["SSHD"].get("bantime")
+        expire: datetime = generate_expire(ban_time)
+    create_whois_tasks: List = [asyncio.create_task(create_whois(ip)) for ip in to_ban]
     await asyncio.gather(*create_whois_tasks)
     to_ban: List = await filter_to_ban(to_ban)
     if to_ban:
@@ -75,23 +75,23 @@ async def manual_ban(to_ban: List, expire: datetime = None) -> None:
         await update_firewall()
 
 
-async def filter_to_unban(to_unban):
-    denied = set(get_deny())
-    whitelist = set(get_allow())
+async def filter_to_unban(to_unban: List) -> List:
+    denied: Set = set(get_deny())
+    whitelist: Set = set(get_allow())
     to_unban: Set = set(to_unban)
     return list(to_unban - denied - whitelist)
 
 
-async def manual_unban(to_unban, expire=None) -> None:
+async def manual_unban(to_unban: List, expire: Optional[datetime] = None) -> None:
     if expire == None:
         expire = generate_expire(0)
-    to_unban = await filter_to_unban(to_unban)
+    to_unban: List = await filter_to_unban(to_unban)
     if to_unban:
         await update_expire_by_ips(to_unban, expire)
         await update_firewall()
 
 
-async def manual_get_banned_ips(ips) -> pd.DataFrame:
+async def manual_get_banned_ips(ips: List) -> pd.DataFrame:
     tasks = [asyncio.create_task(get_banned_by_ip(ip)) for ip in ips]
     result = await asyncio.gather(*tasks)
     return pd.DataFrame(reduce(lambda x, y: x + y, result, []))
